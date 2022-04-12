@@ -4,7 +4,7 @@ namespace ConsoleApp1
 {
     class Program
     {
-        private int euklidoAlgorithm(int a, int b)
+        private bool euklidoAlgorithm(int a, int b)
         {
             while (a > 0 && b > 0)
             {
@@ -12,8 +12,10 @@ namespace ConsoleApp1
                 else { b = b % a; }
 
             }
-            return a + b;
+            if (a + b == 1) return true;
+            else { return false; }
         }
+        
         private int raktoGeneravimas(int p, int q)
         {
             int n = p * q;
@@ -32,6 +34,20 @@ namespace ConsoleApp1
             else { return false; }
 
         }
+        private void privatusRaktas(int e, int f)
+        {
+            int p = 0;
+            int temp;
+            for (int i = 0; p <= 5; i++)
+            {
+                temp = (i * e) % f;
+                if (temp == 1)
+                {
+                    Console.Write(i + " ");
+                    p++;
+                }
+            }
+        }
         static void Main(string[] args)
         {
             Program prog = new Program();
@@ -41,22 +57,22 @@ namespace ConsoleApp1
             string q = Console.ReadLine();
             Console.Write("ir pradini teksta x= ");
             string x = Console.ReadLine();
-        
             try
             {
-               
-                int a = int.Parse(p);
-                int b = int.Parse(q);
-                Console.WriteLine("Pasirinkite is galimu variantu eksponentine reikšme: ");
-                Console.Write("1");
-                for (int i = 2; i <= prog.raktoGeneravimas(a, b); i++)
-                {
-                    if (prog.isPirminis(i)) Console.Write(" "+i);
-                }
-                Console.WriteLine("");
-                string pas = Console.ReadLine();
-                int e = int.Parse(pas);
-                Console.Write(prog.euklidoAlgorithm(e, prog.raktoGeneravimas(a, b)));
+                
+                 int a = int.Parse(p);
+                 int b = int.Parse(q);
+                 Console.WriteLine("Pasirinkite is galimu variantu eksponentine reikšme: ");
+                 for (int i = 0; i <= prog.raktoGeneravimas(a, b); i++)
+                 {
+                     if (prog.euklidoAlgorithm(i, prog.raktoGeneravimas(a, b))) Console.Write(i+" ");
+                 }
+                 Console.WriteLine("Pasirinkimas: ");
+                 string pas = Console.ReadLine();
+                 int e = int.Parse(pas);
+                
+                prog.privatusRaktas(e, prog.raktoGeneravimas(a, b));
+
             }
             catch(Exception e)
             {
