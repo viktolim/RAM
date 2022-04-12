@@ -30,6 +30,7 @@ namespace ConsoleApp1
             }
             if (k == 2) return true;
             else { return false; }
+
         }
         static void Main(string[] args)
         {
@@ -61,6 +62,7 @@ namespace ConsoleApp1
             {
                 Console.WriteLine(e+"pirmi laukai turi buti skaiciai");
             }
+
 
 
 
