@@ -1,87 +1,111 @@
 ﻿using System;
+using System.Text;
 
 namespace ConsoleApp1
 {
     class Program
     {
-        private bool euklidoAlgorithm(int a, int b)
-        {
-            while (a > 0 && b > 0)
-            {
-                if (a > b) a = a % b;
-                else { b = b % a; }
 
-            }
-            if (a + b == 1) return true;
-            else { return false; }
-        }
-        
-        private int raktoGeneravimas(int p, int q)
-        {
-            int n = p * q;
-            int f = (p - 1) * (q - 1);
-            
-            return f;
-        }
-        private bool isPirminis(int n)
+        public bool isPirminis(int n)
         {
             int k = 0;
-            for(int i=1; i<=n; i++)
+            for (int i = 1; i <= n; i++)
             {
-                if (n % i == 0)k++;
+                if (n % i == 0) k++;
             }
             if (k == 2) return true;
             else { return false; }
 
         }
-        private void privatusRaktas(int e, int f)
+        private int privatusRaktas(int n)
         {
-            int p = 0;
-            int temp;
-            for (int i = 0; p <= 5; i++)
+            int[] temp = new int[2];
+            for (int i = 0; i <= n; i++)
             {
-                temp = (i * e) % f;
-                if (temp == 1)
+                if (isPirminis(i))
                 {
-                    Console.Write(i + " ");
-                    p++;
+                    for (int j = 0; j <= n; j++)
+                    {
+                        if (isPirminis(j))
+                        {
+                            if (i * j == n)
+                            {
+                             
+                                return i*j;
+                            }
+
+                        }
+                    }
+
                 }
             }
+            return 0;
         }
         static void Main(string[] args)
         {
-            Program prog = new Program();
-            Console.Write("Iveskite du pirminius laukus p= ");
-            string p = Console.ReadLine();
-            Console.Write("q= ");
-            string q = Console.ReadLine();
-            Console.Write("ir pradini teksta x= ");
-            string x = Console.ReadLine();
-            try
+            Program program = new Program();
+            
+            KodoGeneravimas kodoGeneravimas = new KodoGeneravimas();
+           kodoGeneravimas.generuoti();
+            int[] kodas = kodoGeneravimas.getKodas();
+
+            program.encryption(kodas);*/
+            Console.WriteLine(Math.Pow(16, 23) % 33);
+     
+            //program.descryption();
+         
+                
+
+
+        }
+        private int[] getKeyFromName()
+        {
+            DataService data = new DataService();
+            Console.Write("Iveskite varda kuris uzsifravo koda: ");
+            string name = Console.ReadLine();
+
+            int[] key = data.getData(name);
+            return key;
+        }
+        private void encryption(int[] temp)
+        {
+            int[] key = getKeyFromName();
+
+            double[] sifr = new double[temp.Length];
+            for (int i = 0; i < temp.Length; i++)
             {
-                
-                 int a = int.Parse(p);
-                 int b = int.Parse(q);
-                 Console.WriteLine("Pasirinkite is galimu variantu eksponentine reikšme: ");
-                 for (int i = 0; i <= prog.raktoGeneravimas(a, b); i++)
-                 {
-                     if (prog.euklidoAlgorithm(i, prog.raktoGeneravimas(a, b))) Console.Write(i+" ");
-                 }
-                 Console.WriteLine("Pasirinkimas: ");
-                 string pas = Console.ReadLine();
-                 int e = int.Parse(pas);
-                
-                prog.privatusRaktas(e, prog.raktoGeneravimas(a, b));
+                sifr[i] = Math.Pow(temp[i], key[1]) % key[0];
 
             }
-            catch(Exception e)
+            Console.WriteLine("Sifruotas kodas: ");
+            for (int i = 0; i < temp.Length; i++)
             {
-                Console.WriteLine(e+"pirmi laukai turi buti skaiciai");
+                Console.Write(sifr[i]+" ");
             }
+            Console.Write("kuris issaugotas tekstiniame faile: sifruotas");
+            DataService data = new DataService();
+            data.putDataInTxt(sifr);
 
-
-
-
+        }
+        private void descryption()
+        {
+            DataService data = new DataService();
+            Console.Write("Iveskite varda kuris uzsifravo koda: ");
+            string name = Console.ReadLine();
+            int[] key = data.getPrivateKey(name);
+            DataService dataService = new DataService();
+            int[] text=dataService.GetDataFromTxt();
+            Console.WriteLine(text[0].ToString()+" "+key[1].ToString()+" "+ key[0].ToString());
+            int[] temp = new int[text.Length];
+            for (int i=0; i<text.Length; i++)
+            {
+               temp[i]=(int)(Math.Pow(double.Parse("23"), double.Parse("25"))) % 33;
+            }
+            Console.WriteLine("Desifruotas kodas: ");
+            for (int i = 0; i < text.Length; i++)
+            {
+                Console.Write(temp[i] + " ");
+            }
         }
        
     }
